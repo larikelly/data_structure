@@ -1,0 +1,47 @@
+# EXERCÍCIO 1 — HEAP SORT
+# Enunciado:
+# "Modifique o Heap Sort para contar TESTES e TROCAS."
+
+def heap_sort(arr):
+    a = arr[:]
+    testes = 0
+    trocas = 0
+    n = len(a)
+
+    def heapify(n, i):
+        nonlocal testes, trocas
+        largest = i
+        l = 2*i+1
+        r = 2*i+2
+
+        if l < n:
+            testes += 1
+            if a[l] > a[largest]:
+                largest = l
+        if r < n:
+            testes += 1
+            if a[r] > a[largest]:
+                largest = r
+        if largest != i:
+            a[i], a[largest] = a[largest], a[i]
+            trocas += 1
+            heapify(n, largest)
+
+    for i in range(n//2 - 1, -1, -1):
+        heapify(n, i)
+
+    for i in range(n-1, 0, -1):
+        a[i], a[0] = a[0], a[i]
+        trocas += 1
+        heapify(i, 0)
+
+    return a, testes, trocas
+
+
+if __name__ == "__main__":
+    lista = [37,75,90,82,8,18,23,93,57,10]
+    ordenada, testes, trocas = heap_sort(lista)
+    print("\nHEAP SORT:")
+    print("Original:", lista)
+    print("Ordenada:", ordenada)
+    print("Testes:", testes, "Trocas:", trocas)
